@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Develop React Again</title>
+    <!-- <script src="https://unpkg.com/react-dom@18.1.0/umd/react-dom.production.min.js"></script> -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script type="module">
+      const showDebug = false;
+
+      const lorem =
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+
+      function myDebug(msg, arg) {
+        if (!showDebug) {
+          return;
+        }
+        const style =
+          "color: #000; font-weight: 500; font-family: 'Comic Code Ligatures'; font-size: 11px; padding-bottom: 3px";
+        console.debug("%c" + msg + ":\n", style, arg);
+      }
+      const app = document.getElementById("app");
+      const heading = document.createElement("h1");
+      const paragraph = document.createElement("p");
+
+      function createElement(tagName, props, ...innerHTML) {
+        // console.debug(innerHTML);
+        let attributes = "";
+        for (const prop in props) {
+          attributes = attributes + " " + `${prop}="${props[prop]}"`;
+        }
+        return `<${tagName}${attributes}>${innerHTML.join(" ")}</${tagName}>`;
+      }
+
+      // testing with h1 element
+      // const el = createElement(
+      //   "h1",
+      //   {
+      //     class: "some class names goes here",
+      //     style:
+      //       "padding: 30px; background: #eef; border-radius: 15px; font-family: sans-serif",
+      //   },
+      //   "More text goes here"
+      // );
+
+      // myDebug("Testing element without children", el);
+
+      const sectionProps = {
+        style:
+          "font-size: 16px; color: #f00; font-family: sans-serif; background: #fcc; padding: 20px; border-radius: 12px",
+        class: "one two three",
+        id: "CustomId",
+      };
+      const testTree = createElement(
+        "div",
+        { class: "some class" },
+        createElement("h1", null, "Header"),
+        createElement("h2", null, "Header"),
+        createElement("section", sectionProps, lorem),
+        createElement("p", null, "lorem ipsum")
+      );
+
+      myDebug("Element with children", testTree);
+
+      // const p = createElement(
+      //   "p",
+      //   { style: "font-size: 18px; padding: 40px; font-family: sans-serif" },
+      //   "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+      // );
+
+      // const tree = createElement(
+      //   "div",
+      //   null,
+      //   createElement("h1", null, "Header"),
+      //   createElement("h2", null, "Header"),
+      //   createElement("h3", null, "Header"),
+      //   createElement("p", null, "Lorem ipsum")
+      // );
+
+      let sixHeaders = "";
+
+      for (let i = 1; i <= 6; i++) {
+        sixHeaders +=
+          createElement(
+            `h${i}`,
+            { style: "color: green" },
+            `Heading level ${i}`
+          ) + "\n";
+      }
+      // console.log(sixHeaders);
+
+      let thousandHeaders = "";
+      for (let i = 0; i <= 1000; i += 6) {
+        thousandHeaders += sixHeaders;
+      }
+
+      const domTree = document.createElement("main");
+      domTree.innerHTML = testTree + sixHeaders;
+      app.appendChild(domTree);
+
+      const root = ReactDOM.createRoot(app);
+      // console.log(root);
+
+      const reactHeader = React.createElement(
+        "h1",
+        { key: "aaaa", className: "asdfadsf" },
+        lorem
+      );
+      console.dir(reactHeader);
+
+      const elObj = {
+        $$typeof: reactHeader.$$typeof,
+        key: "some key",
+        props: {
+          children: "Custom object!",
+        },
+        ref: null,
+        type: "h1",
+        _owner: null,
+      };
+
+      console.dir(elObj);
+
+      // setTimeout(() => {
+      //   root.render(reactHeader);
+      // }, 2000);
+      root.render(elObj);
+
+      // setTimeout(() => {
+      //   root.render(elObj);
+      // }, 1000);
+    </script>
+  </body>
+</html>
